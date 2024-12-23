@@ -118,5 +118,4 @@ const posts = [
 
 export async function GET() {
     return NextResponse.json({posts })
-
 }
