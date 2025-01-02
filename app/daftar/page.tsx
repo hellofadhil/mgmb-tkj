@@ -128,7 +128,7 @@ export default function Page() {
 
             <div className="grid gap-2">
               <Label htmlFor="picture">Foto</Label>
-              <input
+              <Input
                 name="file"
                 multiple={false}
                 id="picture"
