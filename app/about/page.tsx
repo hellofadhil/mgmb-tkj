@@ -1,11 +1,9 @@
 // import Image from 'next/image'
-import { Navbar } from '@/components/navbar'
 import { ArrowRight, CheckCircle, Target, Heart, Lightbulb, Search } from 'lucide-react'
 
 export default function About() {
     return (
         <>
-            <Navbar />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 ">
                 <section className="mb-16">
                     <h2 className="text-3xl font-semibold text-orange-500 mb-6 flex items-center">

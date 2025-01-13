@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { Menu, ChevronRight } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,16 +13,32 @@ import {
 import { NavbarMenu } from './navbar-menu'
 import { ModeToggle } from './mode-toggle'
 
-const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
-    { name: 'Contact', href: '/contact' },
+
+const menuItems = [
+    { name: "Home", href: "" },
+    {
+        name: 'Profil Kami', href: '#', submenu: [
+            { name: 'Tentang Kami', href: '/about' },
+            { name: 'Agenda', href: '/404' },
+        ]
+    },
+    { name: 'Anggota', href: '/about' },
+    { name: 'e-Course', href: '/404' },
+    { name: 'Team Dev', href: '/404' },
 ]
+
 
 export function Navbar() {
     const [isOpen, setIsOpen] = React.useState(false)
+    const [submenuOpen, setSubmenuOpen] = React.useState<string | null>(null)
 
+    const toggleSubmenu = (itemName: string) => {
+        setSubmenuOpen(submenuOpen === itemName ? null : itemName)
+    }
+    const closeAll = () => {
+        setIsOpen(false)
+        setSubmenuOpen(null)
+    }
     return (
         <nav className="bg-white shadow dark:bg-black">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,40 +54,66 @@ export function Navbar() {
                         </div>
                     </div>
                     <div className="hidden sm:ml-6 sm:flex sm:items-center gap-3">
-                        <Button variant="outline">Daftar</Button>
-                        <Button>Login</Button>
-                        <ModeToggle/>
+                        <Button ><Link href="/daftar">Daftar</Link></Button>
+                        <ModeToggle />
                     </div>
-                    <div className="-mr-2 flex items-center sm:hidden">
+                    <div className="-mr-2 flex items-center sm:hidden gap-2">
+                        <ModeToggle />
                         <Sheet open={isOpen} onOpenChange={setIsOpen}>
                             <SheetTrigger asChild>
-                                <Button variant="ghost" className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                                    <span className="sr-only">Open main menu</span>
-                                    {isOpen ? (
-                                        <X className="block h-6 w-6" aria-hidden="true" />
-                                    ) : (
-                                        <Menu className="block h-6 w-6" aria-hidden="true" />
-                                    )}
+                                <Button variant="outline" size="icon" className="md:hidden">
+                                    <Menu className="h-6 w-6" />
+                                    <span className="sr-only">Toggle menu</span>
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="right" className="sm:hidden">
-                                <div className="pt-2 pb-3 space-y-1">
-                                    {navItems.map((item) => (
-                                        <Link
-                                            key={item.name}
-                                            href={item.href}
-                                            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
-                                            onClick={() => setIsOpen(false)}
-                                        >
-                                            {item.name}
-                                        </Link>
-                                    ))}
-                                </div>
-                                <div className="pt-4 pb-3 border-t border-gray-200">
-                                    <Button className="w-full" onClick={() => setIsOpen(false)}>
-                                        Sign In
-                                    </Button>
-                                </div>
+                            <SheetContent side="left" className="w-[300px] sm:w-[400px] p-0">
+                                <nav className="flex flex-col h-full">
+                                    <div className="flex items-center justify-between p-4 border-b">
+                                        <h2 className="text-lg font-semibold">Menu</h2>
+
+                                    </div>
+                                    <ul className="flex-1 overflow-y-auto">
+                                        {menuItems.map((item) => (
+                                            <li key={item.name} className="border-b last:border-b-0">
+                                                {item.submenu ? (
+                                                    <div>
+                                                        <Button
+                                                            variant="ghost"
+                                                            className="w-full justify-between p-3 text-left text-md font-medium"
+                                                            onClick={() => toggleSubmenu(item.name)}
+                                                        >
+                                                            {item.name}
+                                                            <ChevronRight className={`h-5 w-5 transition-transform ${submenuOpen === item.name ? 'rotate-90' : ''}`} />
+                                                        </Button>
+                                                        {submenuOpen === item.name && (
+                                                            <ul className="bg-accent">
+                                                                {item.submenu.map((subItem) => (
+                                                                    <li key={subItem.name} className="border-t">
+                                                                        <a
+                                                                            href={subItem.href}
+                                                                            className="block p-2 pl-8 text-left text-sm bg-white dark:bg-black"
+                                                                            onClick={closeAll}
+                                                                        >
+                                                                            {subItem.name}
+                                                                        </a>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <a
+                                                        href={item.href}
+                                                        className="block p-3 text-left text-md font-medium hover:bg-accent"
+                                                        onClick={closeAll}
+                                                    >
+                                                        {item.name}
+                                                    </a>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </nav>
                             </SheetContent>
                         </Sheet>
                     </div>

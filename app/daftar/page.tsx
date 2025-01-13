@@ -23,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Navbar } from "@/components/navbar";
 
 export default function Page() {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -140,7 +139,6 @@ export default function Page() {
 
   return (
     <>
-      <Navbar />
       <Card className="mx-auto max-w-2xl mt-8 mb-8">
         <CardHeader>
           <CardTitle className="text-2xl">Form Daftar Anggota</CardTitle>

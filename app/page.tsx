@@ -5,14 +5,12 @@ import { AppWindow, ArrowRight, BookOpenText, BriefcaseBusiness, UsersRound } fr
 import BlurFade from "@/components/magicui/blur-fade";
 import Image from 'next/image';
 import Link from 'next/link';
-import { Navbar } from '@/components/navbar';
 
 const BLUR_FADE_DELAY = 0.04;
 
 export default function HomePage() {
   return (
     <main>
-      <Navbar />
       <section className="py-20 dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
@@ -136,7 +134,7 @@ export default function HomePage() {
             <BlurFade delay={BLUR_FADE_DELAY * 12 * 0.15} inView>
 
               <a
-                href="https://github.com/leerob/next-saas-starter"
+                href="/daftar"
                 target="_blank"
               >
                 <Button className="bg-white hover:bg-gray-100 text-black border border-gray-200 rounded-full text-xl px-12 py-6 inline-flex items-center justify-center dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
