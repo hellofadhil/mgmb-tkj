@@ -2,44 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { put } from '@vercel/blob';
 import { neon } from "@neondatabase/serverless";
-import { TinyPNG } from 'tinypng';
+import axios from 'axios';
 
 async function uploadFile(file: File): Promise<string> {
-  try {
-    const client = new TinyPNG('Zksfg0fLXDLD7T1hRp4ZlD6cjcZtrrDV');
-    const extension = file.type.split('/')[1] || 'bin';
-    const filename = `${uuidv4()}.${extension}`;
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const response = await axios.post(
+    'https://api.tinify.com/shrink',
+    buffer,
+    {
+      headers: {
+        'Content-Type': 'application/octet-stream',
+        Authorization: `Basic ${Buffer.from(`api:${process.env.TINYPNG_API_KEY}`).toString('base64')}`,
+      },
+    }
+  );
 
-    // Convert the file to ArrayBuffer
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+  const { url: compressedUrl } = response.data?.output || {};
+  if (!compressedUrl) throw new Error('Compression failed');
 
-    // Compress the file using TinyPNG client
-    const fileCompress = await client.compress(buffer, {
-      preserve: ['copyright', 'location']
-    });
+  const compressedData = await axios.get(compressedUrl, { responseType: 'arraybuffer' });
+  const filename = `${uuidv4()}.${file.type.split('/')[1] || 'bin'}`;
+  const { url } = await put(filename, Buffer.from(compressedData.data), { access: 'public' });
 
-    // Extract the compressed data (assume it provides a method or property like `fileCompress.data`)
-    const compressedData = Buffer.isBuffer(fileCompress)
-      ? fileCompress
-      : Buffer.from(fileCompress.data);
-
-    // Upload the compressed file
-    const { url } = await put(filename, compressedData, { access: 'public' });
-
-    return url;
-  } catch (error) {
-    console.error('Error uploading to Blob Storage:', error);
-    throw new Error('Failed to upload file');
-  }
+  return url;
 }
-
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
-
-    // Ensure that DATABASE_URL is properly set
-    const databaseUrl = process.env.DATABASE_URL || ""
 
     // Parse form data
     const formData = await req.formData();
@@ -68,7 +57,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const photo_link = await uploadFile(file);
 
     // Connect to the Neon database
-    const sql = neon(databaseUrl);
+    const sql = neon(process.env.DATABASE_URL || "");
 
     // Insert data into the 'member' table
     await sql`

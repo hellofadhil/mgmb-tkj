@@ -78,15 +78,15 @@ export default function Page() {
       const validTypes = ["image/jpg", "image/jpeg", "image/webp"];
       if (!validTypes.includes(file.type)) {
         setError("Please upload a valid image (JPG, JPEG, or WEBP).");
-        inputFileRef.current!.value = ""; 
+        inputFileRef.current!.value = "";
         return;
       }
 
       if (file.size > maxSize) {
         setError("File size exceeds 300KB. Please upload a smaller file.");
-        inputFileRef.current!.value = ""; 
+        inputFileRef.current!.value = "";
       } else {
-        setError(""); 
+        setError("");
       }
     }
   };
@@ -112,28 +112,35 @@ export default function Page() {
       await fetch('/api/daftar/anggota', {
         method: 'POST',
         body: formDataToSend,
-      });
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then(data => {
+          console.log('Success:', data);
+          toast.success("Pendaftaran anggota berhasil.");
 
-      setFormData({
-        full_name: "",
-        email: "",
-        telephone: "",
-        jenis_kelamin: "",
-        tanggal_lahir: "",
-        jabatan: "",
-        unit_kerja: "",
-        asal_sekolah: "",
-        harapan: "",
-        picture: null,
-      });
+          setFormData({
+            full_name: "",
+            email: "",
+            telephone: "",
+            jenis_kelamin: "",
+            tanggal_lahir: "",
+            jabatan: "",
+            unit_kerja: "",
+            asal_sekolah: "",
+            harapan: "",
+            picture: null,
+          });
 
-      if (inputFileRef.current) {
-        inputFileRef.current.value = "";
-      }
+          if (inputFileRef.current) {
+            inputFileRef.current.value = "";
+          }
+        })
 
-      toast.success("Form submitted successfully!");
     } catch {
-      toast.error("An error occurred. Please try again.");
+      toast.error("Pendaftaran gagal. Silahkan coba lagi.");
     }
   };
 
@@ -241,7 +248,7 @@ export default function Page() {
                     <SelectItem value="PELINDUNG">PELINDUNG</SelectItem>
                     <SelectItem value="PEMBINA">PEMBINA</SelectItem>
                     <SelectItem value="PENGARAH">PENGARAH</SelectItem>
-                    <SelectItem value="KETUS">KETUS</SelectItem>
+                    <SelectItem value="KETUA">KETUA</SelectItem>
                     <SelectItem value="WAKIL KETUA">WAKIL KETUA</SelectItem>
                     <SelectItem value="SEKRETARIS">SEKRETARIS</SelectItem>
                     <SelectItem value="BIDANG PERENCANAAN">BIDANG PERENCANAAN</SelectItem>
