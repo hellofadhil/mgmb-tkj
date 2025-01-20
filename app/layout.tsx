@@ -19,9 +19,9 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "MGMP TKJ JAWA BARAT",
-  description: "Musyawarah Guru Mata Pelajaran (MGMP) merupakan sarana yang sangat penting dalam pengembangan kurikulum mata pelajaran ekonomi di tingkat SMA di Jakarta atau satu model yang digunakan untuk peningkatan kompetensi pembelajaran para guru.",
+  description: "Musyawarah Guru Mata Pelajaran (MGMP) untuk pengembangan kurikulum dan peningkatan kompetensi guru di Jawa Barat.",
   icons: {
-    icon: 'logo.webp  '
+    icon: 'logo.webp'
   }
 };
 
@@ -33,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+      <link rel="icon" href="logo.webp" type="image/webp" />
         <meta name="google-site-verification" content="LQl0zOczqi-fcwMP9HcJJAeTuLg3s2JZLnzb_rroMxY" />
       </head>
       <body

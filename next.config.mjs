@@ -14,6 +14,10 @@ const nextConfig = {
           protocol: 'https',
           hostname: 'www.eventyup.com',
         },
+        {
+          protocol: 'https',
+          hostname: 'k31kdl3eukazsfrf.public.blob.vercel-storage.com',
+        },
       ],
     },
   };

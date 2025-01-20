@@ -22,7 +22,7 @@ const menuItems = [
             { name: 'Agenda', href: '/404' },
         ]
     },
-    { name: 'Anggota', href: '/about' },
+    { name: 'Anggota', href: '/anggota' },
     { name: 'e-Course', href: '/404' },
     { name: 'Team Dev', href: '/404' },
 ]
@@ -103,12 +103,12 @@ export function Navbar() {
                                                     </div>
                                                 ) : (
                                                     <a
-                                                        href={item.href}
-                                                        className="block p-3 text-left text-md font-medium hover:bg-accent"
-                                                        onClick={closeAll}
-                                                    >
-                                                        {item.name}
-                                                    </a>
+                                                    href={item.href}
+                                                    className="block p-3 text-left text-md font-medium hover:bg-accent"
+                                                    onClick={closeAll}
+                                                >
+                                                    {item.name}
+                                                </a>
                                                 )}
                                             </li>
                                         ))}

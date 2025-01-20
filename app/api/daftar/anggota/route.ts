@@ -53,13 +53,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       harapan,
     } = formObject;
 
+
+    const sql = neon(process.env.DATABASE_URL || "");
+
+    const existEmail = await sql`select email from member where email = ${email}`
+    if (existEmail) return NextResponse.json({ message: 'Email ini sudah digunakan.' }, { status: 409 });
+
     // Upload file and get the URL
     const photo_link = await uploadFile(file);
 
-    // Connect to the Neon database
-    const sql = neon(process.env.DATABASE_URL || "");
-
-    // Insert data into the 'member' table
     await sql`
       INSERT INTO member 
       (full_name, email, telephone, jenis_kelamin, tanggal_lahir, jabatan, unit_kerja, asal_sekolah, harapan, photo_link) 

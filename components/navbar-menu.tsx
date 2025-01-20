@@ -62,7 +62,7 @@ export function NavbarMenu() {
 
 
         <NavigationMenuItem>
-          <Link href="/404" legacyBehavior passHref>
+          <Link href="/anggota" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Anggota
             </NavigationMenuLink>

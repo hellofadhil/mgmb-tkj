@@ -73,7 +73,7 @@ export default function Page() {
 
     if (file) {
       // Check file size (in bytes)
-      const maxSize = 250 * 1024; // 300KB in bytes
+      const maxSize = 500 * 1024;
 
       const validTypes = ["image/jpg", "image/jpeg", "image/webp"];
       if (!validTypes.includes(file.type)) {
@@ -83,7 +83,7 @@ export default function Page() {
       }
 
       if (file.size > maxSize) {
-        setError("File size exceeds 300KB. Please upload a smaller file.");
+        setError("File size exceeds 500KB. Please upload a smaller file.");
         inputFileRef.current!.value = "";
       } else {
         setError("");
@@ -109,35 +109,36 @@ export default function Page() {
     }
 
     try {
-      await fetch('/api/daftar/anggota', {
+      const response = await fetch('/api/daftar/anggota', {
         method: 'POST',
         body: formDataToSend,
       })
-        .then(response => {
-          if (!response.ok) throw new Error('Network response was not ok');
-          return response.json();
-        })
-        .then(data => {
-          console.log('Success:', data);
-          toast.success("Pendaftaran anggota berhasil.");
 
-          setFormData({
-            full_name: "",
-            email: "",
-            telephone: "",
-            jenis_kelamin: "",
-            tanggal_lahir: "",
-            jabatan: "",
-            unit_kerja: "",
-            asal_sekolah: "",
-            harapan: "",
-            picture: null,
-          });
+      if (response.status === 409) {
+        const data = await response.json();
+        toast.error(data.message);
+        return;
+      }
 
-          if (inputFileRef.current) {
-            inputFileRef.current.value = "";
-          }
-        })
+      if (!response.ok) throw new Error();
+
+      await response.json();
+      toast.success("Pendaftaran anggota berhasil.");
+
+      setFormData({
+        full_name: "",
+        email: "",
+        telephone: "",
+        jenis_kelamin: "",
+        tanggal_lahir: "",
+        jabatan: "",
+        unit_kerja: "",
+        asal_sekolah: "",
+        harapan: "",
+        picture: null,
+      });
+
+      if (inputFileRef.current) inputFileRef.current.value = "";
 
     } catch {
       toast.error("Pendaftaran gagal. Silahkan coba lagi.");
@@ -180,6 +181,7 @@ export default function Page() {
                 accept="image/jpeg, image/jpg, image/webp"  // Accept only JPG, JPEG, and WEBP
                 onChange={handleFileChange}
               />
+              <p className="text-sm text-orange-300">File tidak boleh melebihi 500kb. Silahkan Kompresi data di squoosh.app</p>
               {error && <p style={{ color: 'red' }} className="text-sm">{error}</p>}
             </div>
 
