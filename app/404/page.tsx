@@ -3,10 +3,9 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import Meteors from '@/components/ui/meteors'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
-import { ModeToggle } from '@/components/mode-toggle'
+import { Meteors } from '@/components/magicui/meteors'
 
 export default function NotFound() {
   const { theme } = useTheme()
@@ -49,7 +48,6 @@ export default function NotFound() {
               Back
             </Link>
           </Button>
-          <ModeToggle />
         </div>
       </div>
     </div>

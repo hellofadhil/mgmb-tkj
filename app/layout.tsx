@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider"
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 // Custom fonts
 const geistSans = localFont({
@@ -18,10 +17,10 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "MGMP TKJ JAWA BARAT",
-  description: "Musyawarah Guru Mata Pelajaran (MGMP) untuk pengembangan kurikulum dan peningkatan kompetensi guru di Jawa Barat.",
+  title: "Bazma – Baituzzakah Pertamina",
+  description: "Yayasan Baituzzakah Pertamina (Bazma) adalah Lembaga Nirlaba yang berkhidmat mengangkat harkat sosial kemanusiaan dengan mendayagunakan dana zakat, infak/sedekah dan wakaf (Ziswaf) yang bersumber dari masyarakat. Dana yang terhimpun disalurkan dalam beragam bentuk program sosial, pendidikan, kesehatan, pelayanan dhuafa, penanganan bencana dan pemberdayaan ekonomi masyarakat di seluruh Indonesia.",
   icons: {
-    icon: 'logo.webp'
+    icon: 'https://bazma.org/wp-content/uploads/2025/02/cropped-Logo-BAZMA-2-4-192x192.png'
   }
 };
 
@@ -39,16 +38,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-black`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
+          <Header/>
+          <div className="mb-24"></div>
           {children}
-          <Footer />
-        </ThemeProvider>
+          <Footer/>
       </body>
     </html>
   );
